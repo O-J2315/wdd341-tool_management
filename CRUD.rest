@@ -1,0 +1,11 @@
+### LocalHost get all hand tools
+http://localhost:3000/hand-tools
+### LocalHost get all power tools
+http://localhost:3000/power-tools
+
+### LocalHost get one hand tool
+http://localhost:3000/hand-tools/687999c5739cb158179de7c8
+
+### LocalHost get one power tool
+http://localhost:3000/power-tools/687999a8739cb158179de7c2
+

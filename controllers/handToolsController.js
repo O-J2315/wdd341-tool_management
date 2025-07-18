@@ -1,13 +1,32 @@
-const { getDb } = require('../database/connect');
-const { ObjectId } = require('mongodb');
+const { getDb } = require("../database/connect");
+const { ObjectId } = require("mongodb");
 
 const getAllHandTools = async (req, res) => {
   try {
     const db = getDb();
-    const tools = await db.collection('hand_tools').find().toArray();
+    console.log("Fetching all hand tools");
+    const tools = await db.collection("hand_tools").find().toArray();
+    console.log(tools);
+
     res.json(tools);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to get hand tools' });
+    res.status(500).json({ error: "Failed to get hand tools" });
+  }
+};
+
+const getHandToolById = async (req, res) => {
+  try {
+    const db = getDb();
+    const { id } = req.params;
+    const tool = await db
+      .collection("hand_tools")
+      .findOne({ _id: new ObjectId(id) });
+    if (!tool) {
+      return res.status(404).json({ error: "Hand tool not found" });
+    }
+    res.json(tool);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to get hand tool" });
   }
 };
 
@@ -15,10 +34,10 @@ const createHandTool = async (req, res) => {
   try {
     const db = getDb();
     const newTool = req.body;
-    const result = await db.collection('hand_tools').insertOne(newTool);
+    const result = await db.collection("hand_tools").insertOne(newTool);
     res.status(201).json(result);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to create hand tool' });
+    res.status(500).json({ error: "Failed to create hand tool" });
   }
 };
 
@@ -27,13 +46,12 @@ const updateHandTool = async (req, res) => {
     const db = getDb();
     const { id } = req.params;
     const updates = req.body;
-    const result = await db.collection('hand_tools').updateOne(
-      { _id: new ObjectId(id) },
-      { $set: updates }
-    );
+    const result = await db
+      .collection("hand_tools")
+      .updateOne({ _id: new ObjectId(id) }, { $set: updates });
     res.json(result);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to update hand tool' });
+    res.status(500).json({ error: "Failed to update hand tool" });
   }
 };
 
@@ -41,10 +59,12 @@ const deleteHandTool = async (req, res) => {
   try {
     const db = getDb();
     const { id } = req.params;
-    const result = await db.collection('hand_tools').deleteOne({ _id: new ObjectId(id) });
+    const result = await db
+      .collection("hand_tools")
+      .deleteOne({ _id: new ObjectId(id) });
     res.json(result);
   } catch (err) {
-    res.status(500).json({ error: 'Failed to delete hand tool' });
+    res.status(500).json({ error: "Failed to delete hand tool" });
   }
 };
 
@@ -53,4 +73,5 @@ module.exports = {
   createHandTool,
   updateHandTool,
   deleteHandTool,
+  getHandToolById,
 };
