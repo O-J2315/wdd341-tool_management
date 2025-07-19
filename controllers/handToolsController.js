@@ -1,5 +1,17 @@
 const { getDb } = require("../database/connect");
 const { ObjectId } = require("mongodb");
+const Joi = require("joi");
+
+//Schema 
+
+const handToolSchema = Joi.object({
+  name: Joi.string().required(),
+  brand: Joi.string().required(),
+  size: Joi.string().valid('Small', 'Medium', 'Large').required(),
+  condition: Joi.string().valid('new', 'good', 'fair', 'poor').required(),
+  status: Joi.string().valid('available', 'assigned', 'repair', 'unavailable').required(),
+  notes: Joi.string().allow('').optional()
+});
 
 const getAllHandTools = async (req, res) => {
   try {
@@ -31,45 +43,46 @@ const getHandToolById = async (req, res) => {
 };
 
 const createHandTool = async (req, res) => {
-  const tool = {
-    name: req.body.name,
-    brand: req.body.brand,
-    size: req.body.size,
-    condition: req.body.condition,
-    status: req.body.status,
-    notes: req.body.notes,
-  };
+  const tool = req.body;
 
-  console.log("🛠️ Creating hand tool:", tool);
+  // Validate tool
+  const { error } = handToolSchema.validate(tool);
+  if (error) return res.status(400).json({ error: error.details[0].message });
 
   try {
-    const result = await getDb()
-      .collection("hand_tools")
-      .insertOne(tool);
-
+    const db = getDb();
+    const result = await db.collection('hand_tools').insertOne(tool);
     res.status(201).json({
-      message: "Hand tool created successfully",
+      message: 'Hand tool created successfully',
       id: result.insertedId
     });
   } catch (err) {
-    res.status(500).json({
-      message: "Error creating hand tool",
-      error: err.message
-    });
+    res.status(500).json({ error: 'Failed to create hand tool' });
   }
 };
 
 const updateHandTool = async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+
+  // Validate incoming data
+  const { error } = handToolSchema.validate(updates);
+  if (error) return res.status(400).json({ error: error.details[0].message });
+
   try {
     const db = getDb();
-    const { id } = req.params;
-    const updates = req.body;
-    const result = await db
-      .collection("hand_tools")
-      .updateOne({ _id: new ObjectId(id) }, { $set: updates });
-    res.json(result);
+    const result = await db.collection('hand_tools').updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updates }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'Hand tool not found' });
+    }
+
+    res.json({ message: 'Hand tool updated successfully', result });
   } catch (err) {
-    res.status(500).json({ error: "Failed to update hand tool" });
+    res.status(500).json({ error: 'Failed to update hand tool' });
   }
 };
 

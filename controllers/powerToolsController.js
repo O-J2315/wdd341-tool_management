@@ -1,5 +1,17 @@
 const { getDb } = require("../database/connect");
 const { ObjectId } = require("mongodb");
+const Joi = require("joi");
+
+const powerToolSchema = Joi.object({
+  name: Joi.string().required(),
+  brand: Joi.string().required(),
+  model: Joi.string().required(),
+  serialNumber: Joi.string().required(),
+  condition: Joi.string().valid('new', 'good', 'fair', 'poor').required(),
+  status: Joi.string().valid('available', 'assigned', 'repair', 'unavailable').required(),
+  notes: Joi.string().allow('').optional(),
+  lastServiced: Joi.date().iso().optional()
+});
 
 const getAllPowerTools = async (req, res) => {
   try {
@@ -28,41 +40,43 @@ const getPowerToolById = async (req, res) => {
 };
 
 const createPowerTool = async (req, res) => {
+  const tool = req.body;
+
+  const { error } = powerToolSchema.validate(tool);
+  if (error) return res.status(400).json({ error: error.details[0].message });
+
   try {
     const db = getDb();
-    const powerTool = {
-      name: req.body.name,
-      brand: req.body.brand,
-      condition: req.body.condition,
-      status: req.body.status,
-      notes: req.body.notes
-    };
-
-    const result = await db.collection('power_tools').insertOne(powerTool);
-    res.status(201).json(result);
+    const result = await db.collection('power_tools').insertOne(tool);
+    res.status(201).json({
+      message: 'Power tool created successfully',
+      id: result.insertedId
+    });
   } catch (err) {
-    console.error('Error creating power tool:', err);
     res.status(500).json({ error: 'Failed to create power tool' });
   }
 };
 
 const updatePowerTool = async (req, res) => {
+  const { id } = req.params;
+  const updates = req.body;
+
+  const { error } = powerToolSchema.validate(updates);
+  if (error) return res.status(400).json({ error: error.details[0].message });
+
   try {
     const db = getDb();
-    const { id } = req.params;
-    const updates = req.body;
-
-    const result = await db
-      .collection('power_tools')
-      .updateOne({ _id: new ObjectId(id) }, { $set: updates });
+    const result = await db.collection('power_tools').updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updates }
+    );
 
     if (result.matchedCount === 0) {
       return res.status(404).json({ error: 'Power tool not found' });
     }
 
-    res.status(200).json(result);
+    res.json({ message: 'Power tool updated successfully', result });
   } catch (err) {
-    console.error('Error updating power tool:', err);
     res.status(500).json({ error: 'Failed to update power tool' });
   }
 };
@@ -78,7 +92,7 @@ const deletePowerTool = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Failed to delete power tool" });
     res.status(404).json({ error: "Power tool not found" });
-    
+
   }
 };
 

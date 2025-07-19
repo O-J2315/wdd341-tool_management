@@ -45,116 +45,78 @@
       }
     },
     "post": {
-      "description": "Create a new power tool",
-      "parameters": [
-        {
-          "name": "body",
-          "in": "body",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "name": { "type": "string", "example": "Milwaukee Band Saw" },
-              "brand": { "type": "string", "example": "Milwaukee" },
-              "condition": { "type": "string", "example": "fair" },
-              "status": { "type": "string", "example": "assigned" },
-              "notes": { "type": "string", "example": "Blade replaced March 2025" }
-            }
-          }
-        }
-      ],
-      "responses": {
-        "201": {
-          "description": "Power tool created"
-        },
-        "500": {
-          "description": "Internal Server Error"
+  "description": "Create a new power tool",
+  "requestBody": {
+    "required": true,
+    "content": {
+      "application/json": {
+        "example": {
+          "name": "Milwaukee Band Saw",
+          "brand": "Milwaukee",
+          "model": "M18-123X",
+          "serialNumber": "SN12345678",
+          "condition": "fair",
+          "status": "assigned",
+          "notes": "Blade replaced March 2025",
+          "lastServiced": "2025-07-01"
         }
       }
     }
   },
-  "/power-tools/{id}": {
-    "get": {
-      "description": "Get a power tool by ID",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Power tool found"
-        },
-        "404": {
-          "description": "Power tool not found"
-        },
-        "500": {
-          "description": "Internal Server Error"
-        }
-      }
+  "responses": {
+    "201": {
+      "description": "Created"
     },
+    "400": {
+      "description": "Validation Error"
+    },
+    "500": {
+      "description": "Internal Server Error"
+    }
+  }
+},
     "put": {
-      "description": "Update a power tool by ID",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "body",
-          "in": "body",
-          "required": true,
-          "schema": {
-            "type": "object",
-            "properties": {
-              "name": { "type": "string", "example": "Milwaukee Band Saw" },
-              "brand": { "type": "string", "example": "Milwaukee" },
-              "condition": { "type": "string", "example": "good" },
-              "status": { "type": "string", "example": "available" },
-              "notes": { "type": "string", "example": "Cleaned and ready for use" }
-            }
-          }
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Power tool updated"
-        },
-        "404": {
-          "description": "Power tool not found"
-        },
-        "500": {
-          "description": "Internal Server Error"
-        }
-      }
-    },
-    "delete": {
-      "description": "Delete a power tool by ID",
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "responses": {
-        "200": {
-          "description": "Power tool deleted"
-        },
-        "404": {
-          "description": "Power tool not found"
-        },
-        "500": {
-          "description": "Internal Server Error"
+  "description": "Update a power tool",
+  "parameters": [
+    {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "type": "string"
+    }
+  ],
+  "requestBody": {
+    "required": true,
+    "content": {
+      "application/json": {
+        "example": {
+          "name": "Updated Power Tool Name",
+          "brand": "Updated Brand",
+          "model": "M18-NEW",
+          "serialNumber": "SN99999999",
+          "condition": "good",
+          "status": "available",
+          "notes": "Updated notes",
+          "lastServiced": "2025-07-15"
         }
       }
     }
+  },
+  "responses": {
+    "200": {
+      "description": "OK"
+    },
+    "400": {
+      "description": "Validation Error"
+    },
+    "404": {
+      "description": "Power tool not found"
+    },
+    "500": {
+      "description": "Internal Server Error"
+    }
+  }
+}
   },
     "/hand-tools": {
   "get": {
