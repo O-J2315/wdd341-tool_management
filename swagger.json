@@ -29,152 +29,138 @@
         }
       }
     },
-    "/power-tools": {
-    "get": {
-      "description": "Get all power tools",
-      "responses": {
-        "200": {
-          "description": "List of power tools"
-        },
-        "500": {
-          "description": "Internal Server Error"
-        }
-      }
-    },
-    "post": {
-  "description": "Create a new power tool",
-  "requestBody": {
-    "required": true,
-    "content": {
-      "application/json": {
-        "example": {
-          "name": "Milwaukee Band Saw",
-          "brand": "Milwaukee",
-          "model": "M18-123X",
-          "serialNumber": "SN12345678",
-          "condition": "fair",
-          "status": "assigned",
-          "notes": "Blade replaced March 2025",
-          "lastServiced": "2025-07-01"
-        }
-      }
-    }
-  },
-  "responses": {
-    "201": {
-      "description": "Created"
-    },
-    "400": {
-      "description": "Validation Error"
-    },
-    "500": {
-      "description": "Internal Server Error"
-    }
-  }
-},
-    "put": {
-  "description": "Update a power tool",
-  "parameters": [
-    {
-      "name": "id",
-      "in": "path",
-      "required": true,
-      "type": "string"
-    }
-  ],
-  "requestBody": {
-    "required": true,
-    "content": {
-      "application/json": {
-        "example": {
-          "name": "Updated Power Tool Name",
-          "brand": "Updated Brand",
-          "model": "M18-NEW",
-          "serialNumber": "SN99999999",
-          "condition": "good",
-          "status": "available",
-          "notes": "Updated notes",
-          "lastServiced": "2025-07-15"
-        }
-      }
-    }
-  },
-  "responses": {
-    "200": {
-      "description": "OK"
-    },
-    "400": {
-      "description": "Validation Error"
-    },
-    "404": {
-      "description": "Power tool not found"
-    },
-    "500": {
-      "description": "Internal Server Error"
-    }
-  }
-}
-  },
-    "/hand-tools": {
-  "get": {
-    "summary": "Get all hand tools",
-    "responses": {
-      "200": {
-        "description": "OK"
-      },
-      "500": {
-        "description": "Internal Server Error"
-      }
-    }
-  },
-  "post": {
-  "description": "Create a new hand tool",
-  "parameters": [
-    {
-      "name": "body",
-      "in": "body",
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "example": "Milwaukee Steel Shovel"
+    "/power-tools/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
           },
-          "brand": {
-            "example": "Milwaukee"
-          },
-          "size": {
-            "example": "Medium"
-          },
-          "condition": {
-            "example": "fair"
-          },
-          "status": {
-            "example": "assigned"
-          },
-          "notes": {
-            "example": "Slightly bent on the edge"
+          "500": {
+            "description": "Internal Server Error"
           }
-        },
-        "required": ["name", "brand", "size", "condition", "status"]
+        }
+      },
+      "/power-tools": {
+        "post": {
+          "description": "Create a new power tool",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "Milwaukee Band Saw",
+                  "brand": "Milwaukee",
+                  "model": "M18-123X",
+                  "serialNumber": "SN12345678",
+                  "condition": "fair",
+                  "status": "assigned",
+                  "notes": "Blade replaced March 2025",
+                  "lastServiced": "2025-07-01"
+                }
+              }
+            }
+          },
+          "responses": {
+            "201": {
+              "description": "Power tool successfully created"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      },
+      "/power-tools/{id}": {
+        "put": {
+          "description": "Update an existing power tool",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "example": {
+                  "name": "Milwaukee Band Saw",
+                  "brand": "Milwaukee",
+                  "model": "M18-123X",
+                  "serialNumber": "SN12345678",
+                  "condition": "good",
+                  "status": "in repair",
+                  "notes": "Updated condition after service",
+                  "lastServiced": "2025-07-15"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Power tool updated"
+            },
+            "500": {
+              "description": "Internal Server Error"
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
       }
-    }
-  ],
-  "responses": {
-    "201": {
-      "description": "Hand tool successfully created"
     },
-    "400": {
-      "description": "Bad Request"
+    "/hand-tools/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     },
-    "404": {
-      "description": "Oops something went wrong"
-    },
-    "500": {
-      "description": "Internal Server Error"
-    }
-  }
-}
-},
     "/hand-tools/{id}": {
       "get": {
         "description": "",
@@ -199,59 +185,30 @@
         }
       },
       "put": {
-  "description": "Update an existing hand tool by ID",
-  "parameters": [
-    {
-      "name": "id",
-      "in": "path",
-      "required": true,
-      "type": "string",
-      "description": "The ID of the hand tool to update"
-    },
-    {
-      "name": "body",
-      "in": "body",
-      "required": true,
-      "schema": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "example": "Milwaukee Steel Shovel"
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
-          "brand": {
-            "example": "Milwaukee"
+          "400": {
+            "description": "Bad Request"
           },
-          "size": {
-            "example": "Medium"
+          "404": {
+            "description": "Not Found"
           },
-          "condition": {
-            "example": "fair"
-          },
-          "status": {
-            "example": "assigned"
-          },
-          "notes": {
-            "example": "Slightly bent on the edge"
+          "500": {
+            "description": "Internal Server Error"
           }
         }
-      }
-    }
-  ],
-  "responses": {
-    "200": {
-      "description": "Hand tool successfully updated"
-    },
-    "400": {
-      "description": "Bad Request"
-    },
-    "404": {
-      "description": "Hand tool not found"
-    },
-    "500": {
-      "description": "Internal Server Error"
-    }
-  }
-},
+      },
       "delete": {
         "description": "",
         "parameters": [

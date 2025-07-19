@@ -7,10 +7,12 @@ const powerToolSchema = Joi.object({
   brand: Joi.string().required(),
   model: Joi.string().required(),
   serialNumber: Joi.string().required(),
-  condition: Joi.string().valid('new', 'good', 'fair', 'poor').required(),
-  status: Joi.string().valid('available', 'assigned', 'repair', 'unavailable').required(),
-  notes: Joi.string().allow('').optional(),
-  lastServiced: Joi.date().iso().optional()
+  condition: Joi.string().valid("new", "good", "fair", "poor").required(),
+  status: Joi.string()
+    .valid("available", "assigned", "repair", "unavailable")
+    .required(),
+  notes: Joi.string().allow("").optional(),
+  lastServiced: Joi.date().iso().optional(),
 });
 
 const getAllPowerTools = async (req, res) => {
@@ -47,13 +49,13 @@ const createPowerTool = async (req, res) => {
 
   try {
     const db = getDb();
-    const result = await db.collection('power_tools').insertOne(tool);
+    const result = await db.collection("power_tools").insertOne(tool);
     res.status(201).json({
-      message: 'Power tool created successfully',
-      id: result.insertedId
+      message: "Power tool created successfully",
+      id: result.insertedId,
     });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to create power tool' });
+    res.status(500).json({ error: "Failed to create power tool" });
   }
 };
 
@@ -66,18 +68,17 @@ const updatePowerTool = async (req, res) => {
 
   try {
     const db = getDb();
-    const result = await db.collection('power_tools').updateOne(
-      { _id: new ObjectId(id) },
-      { $set: updates }
-    );
+    const result = await db
+      .collection("power_tools")
+      .updateOne({ _id: new ObjectId(id) }, { $set: updates });
 
     if (result.matchedCount === 0) {
-      return res.status(404).json({ error: 'Power tool not found' });
+      return res.status(404).json({ error: "Power tool not found" });
     }
 
-    res.json({ message: 'Power tool updated successfully', result });
+    res.json({ message: "Power tool updated successfully", result });
   } catch (err) {
-    res.status(500).json({ error: 'Failed to update power tool' });
+    res.status(500).json({ error: "Failed to update power tool" });
   }
 };
 
@@ -92,7 +93,6 @@ const deletePowerTool = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Failed to delete power tool" });
     res.status(404).json({ error: "Power tool not found" });
-
   }
 };
 

@@ -1,19 +1,21 @@
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerAutogen = require("swagger-autogen")();
 
 const doc = {
-  info: {   
-    title: 'Tool Management API',
-    description: 'API documentation for managing hand and power tools',
-    },
-    host: 'wdd341-tool-management.onrender.com',
-    schemes: ['https'],
+  info: {
+    title: "Tool Management API",
+    description: "API documentation for managing hand and power tools",
+  },
+  host: "wdd341-tool-management.onrender.com",
+  schemes: ["https"],
 };
 
-const outputFile = './swagger.json';
-const endpointsFiles = ['./routes/index.js'];
+const outputFile = "./swagger.json";
+const endpointsFiles = ["./routes/index.js"];
 
-swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-  require('./server.js'); // Start the server after generating the documentation
-}).catch(err => {
-  console.error('Error generating Swagger documentation:', err);
-});
+swaggerAutogen(outputFile, endpointsFiles, doc)
+  .then(() => {
+    require("./server.js"); // Start the server after generating the documentation
+  })
+  .catch((err) => {
+    console.error("Error generating Swagger documentation:", err);
+  });
