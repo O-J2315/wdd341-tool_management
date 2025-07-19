@@ -5,8 +5,11 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const bodyParser = require("body-parser");
 
+const app = express();
+app.use(express.json());
 
 app.use(bodyParser.json());
+
 app.use((require, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Headers",
@@ -16,13 +19,6 @@ app.use((require, res, next) => {
   next();
 });
 
-
-
-
-
-
-const app = express();
-app.use(express.json());
 
 // Import and use centralized routes
 app.use("/", require("./routes"));

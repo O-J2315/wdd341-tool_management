@@ -30,11 +30,19 @@ const getPowerToolById = async (req, res) => {
 const createPowerTool = async (req, res) => {
   try {
     const db = getDb();
-    const newTool = req.body;
-    const result = await db.collection("power_tools").insertOne(newTool);
+    const powerTool = {
+      name: req.body.name,
+      brand: req.body.brand,
+      condition: req.body.condition,
+      status: req.body.status,
+      notes: req.body.notes
+    };
+
+    const result = await db.collection('power_tools').insertOne(powerTool);
     res.status(201).json(result);
   } catch (err) {
-    res.status(500).json({ error: "Failed to create power tool" });
+    console.error('Error creating power tool:', err);
+    res.status(500).json({ error: 'Failed to create power tool' });
   }
 };
 
@@ -43,12 +51,19 @@ const updatePowerTool = async (req, res) => {
     const db = getDb();
     const { id } = req.params;
     const updates = req.body;
+
     const result = await db
-      .collection("power_tools")
+      .collection('power_tools')
       .updateOne({ _id: new ObjectId(id) }, { $set: updates });
-    res.json(result);
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'Power tool not found' });
+    }
+
+    res.status(200).json(result);
   } catch (err) {
-    res.status(500).json({ error: "Failed to update power tool" });
+    console.error('Error updating power tool:', err);
+    res.status(500).json({ error: 'Failed to update power tool' });
   }
 };
 
@@ -62,6 +77,8 @@ const deletePowerTool = async (req, res) => {
     res.json(result);
   } catch (err) {
     res.status(500).json({ error: "Failed to delete power tool" });
+    res.status(404).json({ error: "Power tool not found" });
+    
   }
 };
 

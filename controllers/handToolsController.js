@@ -31,13 +31,31 @@ const getHandToolById = async (req, res) => {
 };
 
 const createHandTool = async (req, res) => {
+  const tool = {
+    name: req.body.name,
+    brand: req.body.brand,
+    size: req.body.size,
+    condition: req.body.condition,
+    status: req.body.status,
+    notes: req.body.notes,
+  };
+
+  console.log("🛠️ Creating hand tool:", tool);
+
   try {
-    const db = getDb();
-    const newTool = req.body;
-    const result = await db.collection("hand_tools").insertOne(newTool);
-    res.status(201).json(result);
+    const result = await getDb()
+      .collection("hand_tools")
+      .insertOne(tool);
+
+    res.status(201).json({
+      message: "Hand tool created successfully",
+      id: result.insertedId
+    });
   } catch (err) {
-    res.status(500).json({ error: "Failed to create hand tool" });
+    res.status(500).json({
+      message: "Error creating hand tool",
+      error: err.message
+    });
   }
 };
 
