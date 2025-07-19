@@ -5,8 +5,8 @@ const doc = {
     title: 'Tool Management API',
     description: 'API documentation for managing hand and power tools',
     },
-    host: 'https://wdd341-tool-management.onrender.com',
-    schemes: ['http','https'],
+    host: 'wdd341-tool-management.onrender.com',
+    schemes: ['https'],
 };
 
 const outputFile = './swagger.json';
