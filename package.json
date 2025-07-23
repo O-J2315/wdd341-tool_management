@@ -33,10 +33,12 @@
   },
   "dependencies": {
     "dotenv": "^17.2.0",
+    "express": "^5.1.0",
     "globals": "^16.3.0",
     "joi": "^17.13.3",
     "lint": "^0.8.19",
-    "mongodb": "^6.17.0",
+    "mongodb": "^6.18.0",
+    "swagg": "^5.0.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0"
