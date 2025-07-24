@@ -62,18 +62,26 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-app.get("/", (req, res) => { res.send(req.session.user != undefined ? `Logged in as ${req.session.user.username}` : "Logged out"); });
+app.get("/", (req, res) => {
+  res.send(
+    req.session.user != undefined
+      ? `Logged in as ${req.session.user.username}`
+      : "Logged out",
+  );
+});
 
-app.get("github/callback", passport.authenticate("github", {
-  failureRedirect: "/apic-docs", session: false}),
+app.get(
+  "github/callback",
+  passport.authenticate("github", {
+    failureRedirect: "/apic-docs",
+    session: false,
+  }),
   (req, res) => {
     // Successful authentication, redirect home.
     req.session.user = req.user;
     res.redirect("/");
   },
-)
-
-
+);
 
 connectDb(() => {
   app.listen(3000, () =>
