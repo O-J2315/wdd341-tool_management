@@ -5,7 +5,7 @@ const doc = {
     title: "Tool Management API",
     description: "API documentation for managing hand and power tools",
   },
-  host: "wdd341-tool-management.onrender.com",
+  host: "localhost:3000",
   schemes: ["https"],
 };
 

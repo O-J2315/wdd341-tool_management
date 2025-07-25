@@ -11,9 +11,9 @@ router.use("/power-tools", powerToolsRoutes);
 router.use("/hand-tools", handToolsRoutes);
 
 //Base route for testing
-router.get("/", (req, res) => {
-  res.send("Welcome to the Tool Management API");
-});
+// router.get("/", (req, res) => {
+//   res.send("Welcome to the Tool Management API");
+// });
 
 //Log in route
 router.get("/login", passport.authenticate("github"), (req, res) => {});

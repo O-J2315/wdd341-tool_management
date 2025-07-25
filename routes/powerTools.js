@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const controller = require("../controllers/powerToolsController");
-const isAuthenticated = require("../middleware/isAuthenticated");
+const {isAuthenticated} = require("../middleware/authenticate");
 
 router.get("/", controller.getAllPowerTools);
 router.get("/:id", controller.getPowerToolById);

@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const session = require("express-session");
 const GithubStrategy = require("passport-github2").Strategy;
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
@@ -16,7 +17,7 @@ app
   .use(bodyParser.json())
   .use(
     session({
-      secret: process.env.SESSION_SECRET,
+      secret: "secret",
       resave: false,
       saveUninitialized: true,
     }),
