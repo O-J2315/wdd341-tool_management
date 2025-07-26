@@ -72,7 +72,7 @@ app.get("/", (req, res) => {
 });
 
 app.get(
-  "github/callback",
+  "/github/callback",
   passport.authenticate("github", {
     failureRedirect: "/apic-docs",
     session: false,

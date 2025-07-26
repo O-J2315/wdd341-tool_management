@@ -21,6 +21,7 @@ const getAllPowerTools = async (req, res) => {
     const tools = await db.collection("power_tools").find().toArray();
     res.json(tools);
   } catch (err) {
+    res.send('{"error": "Failed to get power tools"}');
     res.status(500).json({ error: "Failed to get power tools" });
   }
 };

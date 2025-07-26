@@ -5,7 +5,7 @@
     "description": "API documentation for managing hand and power tools",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "wdd341-tool-management.onrender.com",
   "basePath": "/",
   "schemes": ["https"],
   "paths": {
